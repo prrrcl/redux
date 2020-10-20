@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { connect } from 'react-redux'
+import { addCounter, subtractCounter } from './redux/counter/actions';
 
-function App() {
+function App({ counter }) {
+  const [input, setInput] = useState('')
+
+  const handleChange = (e) => {
+    const { value } = e.target
+    setInput(value)
+  }
+
+  const add = () => {
+    addCounter(Number(input))
+  }
+
+  const subtract = () => {
+    subtractCounter(Number(input))
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      Esto es el valor del contador de redux: {counter.count} <br/>
+      <input type="number" onChange={handleChange} value={input} />
+      <button onClick={add}>Añadir</button>
+      <button onClick={subtract}>Restar</button>
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  counter: state.counter
+})
+
+export default connect(mapStateToProps)(App);
